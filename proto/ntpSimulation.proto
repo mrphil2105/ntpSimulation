@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "github.com/ntpSimulation/proto/ntpSimulation;ntpSimulation";
+
+import "google/protobuf/timestamp.proto";
+
+package ntpSimulation;
+
+service Handshake {
+  rpc getTime(sendTime) returns (sendTime) {}
+}
+
+message sendTime {
+  google.protobuf.Timestamp time_now = 1;
+}
