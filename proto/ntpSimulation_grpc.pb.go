@@ -18,86 +18,86 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// HandshakeClient is the client API for Handshake service.
+// NtpClient is the client API for Ntp service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type HandshakeClient interface {
+type NtpClient interface {
 	GetTime(ctx context.Context, in *SendTime, opts ...grpc.CallOption) (*SendTime, error)
 }
 
-type handshakeClient struct {
+type ntpClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewHandshakeClient(cc grpc.ClientConnInterface) HandshakeClient {
-	return &handshakeClient{cc}
+func NewNtpClient(cc grpc.ClientConnInterface) NtpClient {
+	return &ntpClient{cc}
 }
 
-func (c *handshakeClient) GetTime(ctx context.Context, in *SendTime, opts ...grpc.CallOption) (*SendTime, error) {
+func (c *ntpClient) GetTime(ctx context.Context, in *SendTime, opts ...grpc.CallOption) (*SendTime, error) {
 	out := new(SendTime)
-	err := c.cc.Invoke(ctx, "/ntpSimulation.Handshake/getTime", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ntpSimulation.ntp/getTime", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// HandshakeServer is the server API for Handshake service.
-// All implementations must embed UnimplementedHandshakeServer
+// NtpServer is the server API for Ntp service.
+// All implementations must embed UnimplementedNtpServer
 // for forward compatibility
-type HandshakeServer interface {
+type NtpServer interface {
 	GetTime(context.Context, *SendTime) (*SendTime, error)
-	mustEmbedUnimplementedHandshakeServer()
+	mustEmbedUnimplementedNtpServer()
 }
 
-// UnimplementedHandshakeServer must be embedded to have forward compatible implementations.
-type UnimplementedHandshakeServer struct {
+// UnimplementedNtpServer must be embedded to have forward compatible implementations.
+type UnimplementedNtpServer struct {
 }
 
-func (UnimplementedHandshakeServer) GetTime(context.Context, *SendTime) (*SendTime, error) {
+func (UnimplementedNtpServer) GetTime(context.Context, *SendTime) (*SendTime, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTime not implemented")
 }
-func (UnimplementedHandshakeServer) mustEmbedUnimplementedHandshakeServer() {}
+func (UnimplementedNtpServer) mustEmbedUnimplementedNtpServer() {}
 
-// UnsafeHandshakeServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to HandshakeServer will
+// UnsafeNtpServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to NtpServer will
 // result in compilation errors.
-type UnsafeHandshakeServer interface {
-	mustEmbedUnimplementedHandshakeServer()
+type UnsafeNtpServer interface {
+	mustEmbedUnimplementedNtpServer()
 }
 
-func RegisterHandshakeServer(s grpc.ServiceRegistrar, srv HandshakeServer) {
-	s.RegisterService(&Handshake_ServiceDesc, srv)
+func RegisterNtpServer(s grpc.ServiceRegistrar, srv NtpServer) {
+	s.RegisterService(&Ntp_ServiceDesc, srv)
 }
 
-func _Handshake_GetTime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Ntp_GetTime_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SendTime)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(HandshakeServer).GetTime(ctx, in)
+		return srv.(NtpServer).GetTime(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ntpSimulation.Handshake/getTime",
+		FullMethod: "/ntpSimulation.ntp/getTime",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HandshakeServer).GetTime(ctx, req.(*SendTime))
+		return srv.(NtpServer).GetTime(ctx, req.(*SendTime))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Handshake_ServiceDesc is the grpc.ServiceDesc for Handshake service.
+// Ntp_ServiceDesc is the grpc.ServiceDesc for Ntp service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Handshake_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "ntpSimulation.Handshake",
-	HandlerType: (*HandshakeServer)(nil),
+var Ntp_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "ntpSimulation.ntp",
+	HandlerType: (*NtpServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "getTime",
-			Handler:    _Handshake_GetTime_Handler,
+			Handler:    _Ntp_GetTime_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

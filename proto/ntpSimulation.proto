@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 
 package ntpSimulation;
 
-service Handshake {
+service ntp {
   rpc getTime(sendTime) returns (sendTime) {}
 }
 
