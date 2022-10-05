@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-option go_package = "github.com/ntpSimulation/proto/ntpSimulation;ntpSimulation";
+option go_package = "github.com/mrphil2105/ntpSimulation";
 
 import "google/protobuf/timestamp.proto";
 
 package ntpSimulation;
 
-service ntp {
-  rpc getTime(sendTime) returns (sendTime) {}
+service Ntp {
+  rpc getTime(SendTime) returns (SendTime) {}
 }
 
-message sendTime {
-  google.protobuf.Timestamp time_now = 1;
+message SendTime {
+  google.protobuf.Timestamp time = 1;
 }
