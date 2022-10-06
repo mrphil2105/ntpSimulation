@@ -16,7 +16,7 @@ type server struct {
 
 func (s *server) GetTime(ctx context.Context, in *ntpSimulation.SendTime) (*ntpSimulation.SendTime, error) {
     t2 := timestamppb.Now()
-    log.Printf("T1: %v, T2: %v", in.Time.AsTime(), t2.AsTime())
+    log.Printf("\nt1: %v\nt2: %v", in.Time.AsTime(), t2.AsTime())
     return &ntpSimulation.SendTime{Time: t2}, nil
 }
 

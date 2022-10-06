@@ -10,21 +10,23 @@ import (
     "github.com/mrphil2105/ntpSimulation/proto"
 )
 
-func getSingleTimeStamp(c ntpSimulation.NtpClient) (time.Time, time.Time){
-    t1 := timestamppb.Now()
-    t2, err := c.GetTime(context.Background(), &ntpSimulation.SendTime{Time: t1})
-    if err != nil {
-        log.Fatalf("could not SendTime: %v", err)
-    }
-    return t1.AsTime(), t2.Time.AsTime()
-}
-
 func calcTimeDiff(c ntpSimulation.NtpClient) {
-    t1, t2 := getSingleTimeStamp(c)
-    t3, t4 := getSingleTimeStamp(c)
-    scew := t4.Sub(t1) - t3.Sub(t2)
+    var t [4]time.Time
 
-    log.Printf("\nt1: %v\nt2: %v\nt3: %v\nt4: %v\nscew: %v", t1, t2, t3, t4, scew)
+    for i := 0; i < 2; i++ {
+        t1 := timestamppb.Now()
+        t2, err := c.GetTime(context.Background(), &ntpSimulation.SendTime{Time: t1})
+
+        if err != nil {
+            log.Fatalf("could not SendTime: %v", err)
+        }
+
+        t[i*2] = t1.AsTime()
+        t[i*2+1] = t2.Time.AsTime()
+    }
+
+    scew := t[3].Sub(t[0]) - t[2].Sub(t[1])
+    log.Printf("\nt1: %v\nt2: %v\nt3: %v\nt4: %v\nscew: %v", t[0], t[1], t[2], t[3], scew)
 }
 
 func main() {
